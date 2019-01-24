@@ -72,3 +72,11 @@ void Master::moveWindowUp(){
 	}
     memset(fbp + (yend-framejump)*ymultiplier + yadder, 0, framejump*(ymultiplier + yadder));
 }
+
+void Master::draw(int offsetx, int offsety, int **img, int width, int height) {
+    for(int i = 0; i < width; i++) {
+        for(int j = 0; j < height; j++) {
+            assignColor(i + offsetx, j + offsety, (img[i][j] - '0')*(0xffffff));
+        }
+    }
+}

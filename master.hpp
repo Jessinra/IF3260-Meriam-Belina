@@ -35,4 +35,5 @@ public:
     void clearWindow();
     void clearWindow(unsigned int);
     void moveWindowUp();
+    void draw(int, int, int**, int, int);
 };
