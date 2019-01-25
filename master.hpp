@@ -6,6 +6,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <string.h>
+#include "Pixel.hpp"
 
 class Master{
 protected:
@@ -36,4 +37,5 @@ public:
     void clearWindow(unsigned int);
     void moveWindowUp();
     void draw(int, int, int**, int, int);
+    void drawPixels(int, int, Pixel*, int);
 };

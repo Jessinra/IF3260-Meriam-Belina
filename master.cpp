@@ -1,4 +1,5 @@
 #include "master.hpp"
+#include "Pixel.hpp"
 
 Master::Master(){
     // Open the file for reading and writing
@@ -78,5 +79,12 @@ void Master::draw(int offsetx, int offsety, int **img, int width, int height) {
         for(int j = 0; j < height; j++) {
             assignColor(i + offsetx, j + offsety, (img[i][j] - '0')*(0xffffff));
         }
+    }
+}
+
+void Master::drawPixels(int offsetx, int offsety, Pixel* pixels, int numberPixels) {
+    for(int i = 0; i < numberPixels; i++) {
+        // assignColor
+        // assignColor(offsetx + Pixel[i].getRow())
     }
 }
