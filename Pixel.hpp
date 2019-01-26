@@ -1,3 +1,6 @@
+#ifndef PIXEL_HPP
+#define PIXEL_HPP
+
 #include <vector>
 using namespace std;
 
@@ -24,3 +27,5 @@ class Pixel {
     void setCol(int);
     void setColor(unsigned char red, unsigned char green, unsigned char blue);
 };
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef MASTER_HPP
+#define MASTER_HPP
+
 #include <unistd.h>
 #include <cstdio>
 #include <cstdlib>
@@ -39,3 +42,5 @@ public:
     void draw(int, int, int**, int, int);
     void drawPixels(int, int, Pixel*, int);
 };
+
+#endif
