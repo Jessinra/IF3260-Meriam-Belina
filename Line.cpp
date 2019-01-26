@@ -3,14 +3,14 @@
 Line::Line(Pixel startPixel, Pixel endPixel) {
     setStartPixel(startPixel);
     setEndPixel(endPixel);
-    fillPixelsVector();
+    fillPixelsVector();  // Not needed if line displayed as it goes
 }
 
-Line::setStartPixel(Pixel startPixel) {
+void Line::setStartPixel(Pixel startPixel) {
     this->startPixel = startPixel;
 }
 
-Line::setEndPixel(Pixel endPixel) {
+void Line::setEndPixel(Pixel endPixel) {
     this->endPixel = endPixel;
 }
 
@@ -26,19 +26,28 @@ vector<Pixel> Line::getPixelsVector() {
     return this->pixelsVector;
 }
 
-Line::fillPixelsVector() {
-    // Bresenham's line algorithm
+void Line::fillPixelsVector() {
+    // Bresenham's line algorithm with gradient coloring
 
     vector<Pixel> pixelsVector = this->getPixelsVector();
-    Pixel pixel;
+    Pixel* pixel;
 
+    // Position section
     int colStart = this->getStartPixel().getCol();
     int rowStart = this->getStartPixel().getRow();
     int colEnd = this->getEndPixel().getCol();
     int rowEnd = this->getEndPixel().getRow();
 
+    // Color section
+    unsigned char redStart = this->getStartPixel().getRed();
+    unsigned char greenStart = this->getStartPixel().getGreen();
+    unsigned char blueStart = this->getStartPixel().getBlue();
+    unsigned char redEnd = this->getEndPixel().getRed();
+    unsigned char greenEnd = this->getEndPixel().getGreen();
+    unsigned char blueEnd = this->getEndPixel().getBlue();
+
     const bool isSteep = (fabs(colEnd - colStart) > fabs(rowEnd - rowStart));
-    
+
     // Change orientation
     if (isSteep) {
         std::swap(rowStart, colStart);
@@ -51,23 +60,43 @@ Line::fillPixelsVector() {
         std::swap(colStart, colEnd);
     }
 
+    //Setup Const
     const float deltaCol = fabs(colEnd - colStart);
     const float deltaRow = rowEnd - rowStart;
-    float error = deltaRow / 2.0f;
+    const float deltaRed = redEnd - redStart;
+    const float deltaGreen = greenEnd - greenStart;
+    const float deltaBlue = blueEnd - blueStart;
 
     const int colStep = (colStart < colEnd) ? 1 : -1;
-    
+    const float manhattanDist = fabs(deltaCol + deltaRow);
+    const float redStep = deltaRed / manhattanDist;
+    const float greenStep = deltaGreen / manhattanDist;
+    const float blueStep = deltaBlue / manhattanDist;
+
+    // Setup temp variables
+    float error = deltaRow / 2.0f;
     int col = colStart;
+    unsigned char red = redStart;
+    unsigned char green = greenStart;
+    unsigned char blue = blueStart;
 
+    // Iterating the longer axis (x or y who has larger delta)
     for (int row = rowStart; row < rowEnd; row++) {
-        if (isSteep) {
-            pixel = new Pixel(col, row)
-        } else {
-            pixel = new Pixel(row, col)
-        }
-        pixelsVector.push_back(pixel)
 
-        // Calculate error, decide to move aside or not
+        // Calculate current color
+        red += redStep;
+        green += greenStep;
+        blue += blueStep;
+
+        // Add pixel to vector
+        if (isSteep) {
+            pixel = new Pixel(col, row, floor(red), floor(green), floor(blue));
+        } else {
+            pixel = new Pixel(row, col, floor(red), floor(green), floor(blue));
+        }
+        pixelsVector.push_back(*pixel);
+
+        // Calculate error, decide to move aside or not for next step
         error -= deltaCol;
         if (error < 0) {
             col += colStep;

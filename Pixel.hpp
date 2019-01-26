@@ -5,16 +5,22 @@ class Pixel {
    private:
     int col;
     int row;
-    int color;
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
 
    public:
-    Pixel(int, int, int);
-    
+    Pixel();
+    Pixel(int, int);
+    Pixel(int row, int col, unsigned char red, unsigned char green, unsigned char blue);
+
     int getRow();
     int getCol();
-    int getColor();
+    unsigned char getRed();
+    unsigned char getGreen();
+    unsigned char getBlue();
 
     void setRow(int);
     void setCol(int);
-    void setColor(int);
+    void setColor(unsigned char red, unsigned char green, unsigned char blue);
 };

@@ -1,4 +1,6 @@
 #include <vector>
+#include <math.h>
+
 #include "Pixel.hpp"
 using namespace std;
 
@@ -15,12 +17,16 @@ class Line{
 
         Line(Pixel, Pixel);
 
-        setStartPixel(Pixel);
-        setEndPixel(Pixel);
+        void setStartPixel(Pixel);
+        void setEndPixel(Pixel);
         Pixel getStartPixel();
         Pixel getEndPixel();
         vector<Pixel> getPixelsVector();
-        fillPixelsVector();
+
+        // Chose one to use, either store line-building-pixel or just draw it to screen every iteration
+        void fillPixelsVector();
+        void drawLine(char* frameBuffer);
+
 
     // TODO:
     // apply color to fill pixel 
