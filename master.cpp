@@ -74,10 +74,12 @@ void Master::moveWindowUp(){
     memset(fbp + (yend-framejump)*ymultiplier + yadder, 0, framejump*(ymultiplier + yadder));
 }
 
-void Master::draw(int offsetx, int offsety, int **img, int width, int height) {
-    for(int i = 0; i < width; i++) {
-        for(int j = 0; j < height; j++) {
-            assignColor(i + offsetx, j + offsety, (img[i][j] - '0')*(0xffffff));
+void Master::draw(int offsetx, int offsety, int **img, int height, int width) {
+    for(int i = max(0, offsety); i < height; i++) {
+        if(i + offsety >= this->height) break;
+        for(int j = max(0, offsetx); j < width; j++) {
+            if(j + offsetx >= this->width) break;
+            assignColor(j + offsetx, i + offsety, img[i][j]);
         }
     }
 }
