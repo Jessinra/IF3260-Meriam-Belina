@@ -85,7 +85,12 @@ void Line::fillPixelsVector() {
         pixelsVector.push_back(Pixel(x, y, color));
 
         error += deltaErr;
-        while(error >= 0.5){
+        while(error >= 1){
+            y += yStep;
+            pixelsVector.push_back(Pixel(x, y, color));
+            error -= 1;
+        }
+        if(error >= 0.5){
             y += yStep;
             error -= 1;
         }
