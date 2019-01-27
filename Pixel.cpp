@@ -51,3 +51,7 @@ void Pixel::setColor(unsigned char red, unsigned char green, unsigned char blue)
     this->green = green;
     this->blue = blue;
 }
+
+void Pixel::putPixel(char* frameBuffer){
+    //implement this
+}

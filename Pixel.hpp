@@ -23,4 +23,6 @@ class Pixel {
     void setRow(int);
     void setCol(int);
     void setColor(unsigned char red, unsigned char green, unsigned char blue);
+
+    void putPixel(char* frameBuffer);
 };
