@@ -30,11 +30,6 @@ class Line{
 
         // Chose one to use, either store line-building-pixel or just draw it to screen every iteration
         void fillPixelsVector();
-        // void drawLine(char* frameBuffer);
-
-
-    // TODO:
-    // apply color to fill pixel 
 };
 
 #endif
