@@ -84,6 +84,16 @@ void Master::draw(int offsetx, int offsety, int **img, int height, int width) {
     }
 }
 
+void Master::drawPixel(int offsetx, int offsety, const Pixel &pix){
+    assignColor(offsetx + pix.getX(), offsety + pix.getY(), pix.getColor());
+}
+
+void Master::drawLine(int offsetx, int offsety, const Line &line){
+    for(const Pixel &pix : line.getRefPixelsVector()){
+        drawPixel(offsetx, offsety, pix);
+    }
+}
+
 void Master::drawPixels(int offsetx, int offsety, Pixel* pixels, int numberPixels) {
     for(int i = 0; i < numberPixels; i++) {
         // assignColor

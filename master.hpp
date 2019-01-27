@@ -10,6 +10,7 @@
 #include <sys/mman.h>
 #include <string.h>
 #include "Pixel.hpp"
+#include "Line.hpp"
 
 class Master{
 protected:
@@ -40,6 +41,8 @@ public:
     void clearWindow(unsigned int);
     void moveWindowUp();
     void draw(int, int, int**, int, int);
+    void drawPixel(int, int, const Pixel &);
+    void drawLine(int, int, const Line &);
     void drawPixels(int, int, Pixel*, int);
 };
 

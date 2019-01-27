@@ -18,15 +18,15 @@ Pixel::Pixel(int _x, int _y, unsigned int color) {
     col = color;
 }
 
-int Pixel::getX() {
+int Pixel::getX() const{
     return this->x;
 }
 
-int Pixel::getY() {
+int Pixel::getY() const{
     return this->y;
 }
 
-unsigned int Pixel::getColor() {
+unsigned int Pixel::getColor() const{
     return this->col;
 }
 

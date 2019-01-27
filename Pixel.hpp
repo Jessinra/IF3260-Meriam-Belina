@@ -15,9 +15,9 @@ class Pixel {
     Pixel(int, int);
     Pixel(int, int, unsigned int);
 
-    int getX();
-    int getY();
-    unsigned int getColor();
+    int getX() const;
+    int getY() const;
+    unsigned int getColor() const;
 
     void setX(int);
     void setY(int);
