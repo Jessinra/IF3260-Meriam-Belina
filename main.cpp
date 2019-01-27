@@ -36,10 +36,10 @@ public:
             peluru.move();
 
             if(pesawat.outOfWindow(yend, xend)){
-                // if(hitted){
-                //     hitted = false;
-                //     pesawat.setVector(-1, 0);
-                // }
+                if(hitted){
+                    hitted = false;
+                    pesawat.setVector(-1, 0);
+                }
                 pesawat.setPos(Pixel(xend, 0));
             }
 
@@ -48,10 +48,12 @@ public:
             }
 
             if(overlap(pesawat, peluru)){
-                // hitted = true;
-                // pesawat.setVector(-2, 1);
-                pesawat.setPos(Pixel(xend, 0));
-                peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
+                if(!hitted){
+                    hitted = true;
+                    pesawat.setVector(-1, 2);
+                    // pesawat.setPos(Pixel(xend, 0));
+                    peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
+                }
             }
 
             usleep(6000);

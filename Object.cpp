@@ -6,11 +6,9 @@
 Object::Object(){
 }
 
-Object::Object(int _x, int _y, std::string filename){
+Object::Object(float _x, float _y, std::string filename){
     // initialize offset
-    offset.setX(_x);
-    offset.setY(_y);
-    offset.setColor(Color::WHITE);
+    offset = Pixel(_x, _y);
 
     // initialize lines
     ifstream inFile;

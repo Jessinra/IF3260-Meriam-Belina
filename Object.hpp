@@ -18,7 +18,7 @@ protected:
     float dx, dy; // vector normal
 public:
     Object();
-    Object(int, int, std::string);
+    Object(float, float, std::string);
     bool outOfWindow(int, int);
     void setVector(float, float);
     void setSpeed(float);

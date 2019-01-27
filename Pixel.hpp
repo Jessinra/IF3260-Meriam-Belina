@@ -6,25 +6,23 @@ using namespace std;
 
 class Pixel {
    private:
-    int x;
-    int y;
+    float x;
+    float y;
     unsigned int col;
 
    public:
     Pixel();
-    Pixel(int, int);
-    Pixel(int, int, unsigned int);
+    Pixel(float, float);
+    Pixel(float, float, unsigned int);
 
-    int getX() const;
-    int getY() const;
+    float getX() const;
+    float getY() const;
     unsigned int getColor() const;
 
-    void setX(int);
-    void setY(int);
-    void setPos(int, int);
+    void setX(float);
+    void setY(float);
+    void setPos(float, float);
     void setColor(unsigned int);
-
-    void putPixel(char* frameBuffer);
 };
 
 #endif

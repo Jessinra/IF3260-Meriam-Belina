@@ -6,23 +6,23 @@ Pixel::Pixel() {
     col = Color::BLACK;
 }
 
-Pixel::Pixel(int _x, int _y) {
+Pixel::Pixel(float _x, float _y) {
     x = _x;
     y = _y;
     col = Color::WHITE;
 }
 
-Pixel::Pixel(int _x, int _y, unsigned int color) {
+Pixel::Pixel(float _x, float _y, unsigned int color) {
     x = _x;
     y = _y;
     col = color;
 }
 
-int Pixel::getX() const{
+float Pixel::getX() const{
     return this->x;
 }
 
-int Pixel::getY() const{
+float Pixel::getY() const{
     return this->y;
 }
 
@@ -30,23 +30,19 @@ unsigned int Pixel::getColor() const{
     return this->col;
 }
 
-void Pixel::setX(int _x){
+void Pixel::setX(float _x){
     x = _x;
 }
 
-void Pixel::setY(int _y){
+void Pixel::setY(float _y){
     y = _y;
 }
 
-void Pixel::setPos(int _x, int _y){
+void Pixel::setPos(float _x, float _y){
     x = _x;
     y = _y;
 }
 
 void Pixel::setColor(unsigned int color) {
     this->col = color;
-}
-
-void Pixel::putPixel(char* frameBuffer){
-    //implement this
 }
