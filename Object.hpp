@@ -11,11 +11,11 @@ class Object{
 protected:
     Pixel offset;
     vector<Line> lines;
-    vector<vector<int>> img;
+    vector<vector<uint32_t>> img;
 public:
     Object();
     Object(int, int, std::string);
-    Pixel setPos(Pixel);
+    void setPos(Pixel); // change setPos to void
     vector<Line> getLines();
     vector<vector<int>> getImages();
     Pixel getPos();
