@@ -43,8 +43,10 @@ Object::Object(int _x, int _y, std::string filename){
         inFile >> xend;
         inFile >> yend;
         inFile >> color;
-        lines[i].setStartPixel(Pixel(xstart, ystart, color));
-        lines[i].setEndPixel(Pixel(xend, yend, color));
+        Pixel startpx = Pixel(xstart, ystart, color);
+        Pixel endpx = Pixel(xend, yend, color);
+        Line line = Line(startpx, endpx);
+        lines.push_back(line);
     }
     inFile.close();
 }
