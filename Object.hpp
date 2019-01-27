@@ -26,6 +26,8 @@ public:
     void setPos(Pixel); // change setPos to void
     vector<Line> getLines() const;
     Pixel getPos() const;
+    float getDx() const;
+    float getDy() const;
     int getWidth() const;
     int getHeight() const;
     const vector<Line> & getRefLines() const;

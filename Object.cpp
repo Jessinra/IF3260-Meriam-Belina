@@ -90,6 +90,14 @@ void Object::move(){
     offset.setY(offset.getY() + dy * speed);
 }
 
+float Object::getDx() const{
+    return dx;
+}
+
+float Object::getDy() const{
+    return dy;
+}
+
 int Object::getWidth() const{
     return width;
 }

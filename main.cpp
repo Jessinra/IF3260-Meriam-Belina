@@ -16,12 +16,14 @@ public:
     void start() {
         cout<<meriam.getHeight()<<" "<<meriam.getWidth()<<endl;
         cout<<peluru.getHeight()<<" "<<peluru.getWidth()<<endl;
-        meriam.setPos(Pixel((xend - meriam.getWidth())/2, yend - meriam.getHeight() - 2));
-        peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
+        pesawat.setPos(Pixel(xend, 0));
         pesawat.setVector(-1, 0);
         pesawat.setSpeed(1);
+        meriam.setPos(Pixel((xend - meriam.getWidth())/2, yend - meriam.getHeight() - 2));
+        peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
         peluru.setVector(0, -1);
-        peluru.setSpeed(1);
+        peluru.setSpeed(2);
+        bool hitted = false;
         while(true){
             // clear Window
             clearWindow();
@@ -33,17 +35,41 @@ public:
             pesawat.move();
             peluru.move();
 
-            // cout<<pesawat.getRefPos().getX()<<" "<<pesawat.getRefPos().getY()<<endl;
-            if(pesawat.outOfWindow(yend, xend))
+            if(pesawat.outOfWindow(yend, xend)){
+                // if(hitted){
+                //     hitted = false;
+                //     pesawat.setVector(-1, 0);
+                // }
                 pesawat.setPos(Pixel(xend, 0));
+            }
 
-            if(peluru.outOfWindow(yend, xend))
+            if(peluru.outOfWindow(yend, xend)){
                 peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
+            }
 
-            
+            if(overlap(pesawat, peluru)){
+                // hitted = true;
+                // pesawat.setVector(-2, 1);
+                pesawat.setPos(Pixel(xend, 0));
+                peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
+            }
 
-            usleep(800);
+            usleep(6000);
         }
+    }
+    bool overlap(const Object &p, const Object &q){
+        int a,b,c,d,e,f,g,h;
+        a = p.getRefPos().getX();
+        b = p.getRefPos().getY();
+        c = a + p.getWidth();
+        d = b + p.getHeight();
+        e = q.getRefPos().getX();
+        f = q.getRefPos().getY();
+        g = e + q.getWidth();
+        h = f + q.getHeight();
+        if(a > g || e > c) return false;
+        if(b > h || f > d) return false;
+        return true;
     }
 };
 
