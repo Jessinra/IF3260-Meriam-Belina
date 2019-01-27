@@ -26,6 +26,10 @@ Object::Object(int _x, int _y, std::string filename){
     int yStart;
     int xEnd;
     int yEnd;
+    int yMin;
+    int yMax;
+    int xMin;
+    int xMax;
     unsigned int colorStart;
     unsigned int colorEnd;
 
@@ -37,11 +41,25 @@ Object::Object(int _x, int _y, std::string filename){
         inFile >>dec>> xEnd;
         inFile >> yEnd;
         inFile >>hex>> colorEnd;
+        if(i == 0){
+            xMin = min(xStart, xEnd);
+            xMax = max(xStart, xEnd);
+            yMin = min(yStart, yEnd);
+            yMax = max(yStart, yEnd);
+        }
+        else{
+            xMin = min(yMin, min(xStart, xEnd));
+            xMax = max(xMax, max(xStart, xEnd));
+            yMin = min(yMin, min(yStart, yEnd));
+            yMax = max(yMax, max(yStart, yEnd));
+        }
         Pixel startpx = Pixel(xStart, yStart, colorStart);
         Pixel endpx = Pixel(xEnd, yEnd, colorEnd);
         Line line = Line(startpx, endpx);
         lines.push_back(line);
     }
+    height = yMax - yMin + 1;
+    width = xMax - xMin + 1;
     inFile.close();
 
     // for(const Line &x : lines){
@@ -70,6 +88,14 @@ void Object::moveUp(int speed){
 
 void Object::moveDown(int speed){
     offset.setY(offset.getY() + speed);
+}
+
+int Object::getWidth() const{
+    return width;
+}
+
+int Object::getHeight() const{
+    return height;
 }
 
 vector<Line> Object::getLines() const{

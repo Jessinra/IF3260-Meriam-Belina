@@ -18,7 +18,7 @@ public:
             pesawat.moveLeft(1);
             drawObject(pesawat);
             // cout<<pesawat.getRefPos().getX()<<" "<<pesawat.getRefPos().getY()<<endl;
-            if(pesawat.getRefPos().getX() <= 0)
+            if(pesawat.getRefPos().getX() <= -pesawat.getWidth())
                 pesawat.setPos(Pixel(xend, 0));
             usleep(800);
         }
