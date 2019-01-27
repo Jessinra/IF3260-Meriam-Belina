@@ -35,7 +35,7 @@ protected:
     int framejump;
     int offsetcycle;
 public:
-    Master();
+    Master(int, int);
     void assignColor(int, int, unsigned int);
     void assignColor(int, int, int, int);
     void clearWindow();

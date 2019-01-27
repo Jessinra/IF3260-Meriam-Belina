@@ -1,7 +1,11 @@
 #include "master.hpp"
 #include "Pixel.hpp"
 
-Master::Master(){
+Master::Master(int h, int w){
+    xend = yend = 0;
+    yend = h;
+    xend = w;
+
     // Open the file for reading and writing
     fbfd = open("/dev/fb0", O_RDWR);
     if (!fbfd) {
@@ -54,7 +58,7 @@ void Master::assignColor(int x1, int y1, int x2, int y2){
 }
 
 void Master::clearWindow(){
-    memset(fbp, 0, (xend*xmultiplier + xadder + yend*ymultiplier + yadder));
+    memset(fbp, 0, (yend*ymultiplier + yadder));
 }
 
 void Master::clearWindow(unsigned int color){
@@ -76,9 +80,9 @@ void Master::moveWindowUp(){
 
 void Master::draw(int offsetx, int offsety, int **img, int height, int width) {
     for(int y = max(0, offsety); y < height; y++) {
-        if(y + offsety >= this->height) break;
+        if(y + offsety >= this->yend) break;
         for(int x = max(0, offsetx); x < width; x++) {
-            if(x + offsetx >= this->width) break;
+            if(x + offsetx >= this->xend) break;
             assignColor(x + offsetx, y + offsety, img[y][x]);
         }
     }
@@ -86,16 +90,16 @@ void Master::draw(int offsetx, int offsety, int **img, int height, int width) {
 
 void Master::draw(int offsetx, int offsety, const vector<vector<int> > &img){
     for(int y = max(0, offsety); y < (int)img.size(); y++) {
-        if(y + offsety >= this->height) break;
+        if(y + offsety >= this->yend) break;
         for(int x = max(0, offsetx); x < img[y].size(); x++) {
-            if(x + offsetx >= this->width) break;
+            if(x + offsetx >= this->xend) break;
             assignColor(x + offsetx, y + offsety, img[y][x]);
         }
     }
 }
 
 void Master::drawPixel(int offsetx, int offsety, const Pixel &pix){
-    if(offsetx >=0 && offsetx < this->width && offsety >=0 && offsety < this->height)
+    if(offsetx >=0 && offsetx < this->xend && offsety >=0 && offsety < this->yend)
         assignColor(offsetx + pix.getX(), offsety + pix.getY(), pix.getColor());
 }
 
