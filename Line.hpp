@@ -9,7 +9,7 @@ using namespace std;
 
 class Line{
 
-    private:
+    protected:
 
         Pixel startPixel;
         Pixel endPixel;
