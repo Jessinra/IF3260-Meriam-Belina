@@ -11,7 +11,6 @@ class Object{
 protected:
     Pixel offset;
     vector<Line> lines;
-    vector<vector<uint32_t>> img;
 public:
     Object();
     Object(int, int, std::string);
