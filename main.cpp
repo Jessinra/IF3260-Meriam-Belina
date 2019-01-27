@@ -13,17 +13,15 @@ public:
         // meriam = Object(0, 0, "meriam.txt");
     }
     void start() {
-        clearWindow();
-        drawObject(pesawat);
-        // while(true){
-        //     clearWindow();
-        //     pesawat.moveLeft(framejump);
-        //     drawObject(pesawat);
-        //     // cout<<pesawat.getRefPos().getX()<<" "<<pesawat.getRefPos().getY()<<endl;
-        //     if(pesawat.getRefPos().getX() <= 0)
-        //         pesawat.setPos(Pixel(xend, 0));
-        //     usleep(200);
-        // }
+        while(true){
+            clearWindow();
+            pesawat.moveLeft(1);
+            drawObject(pesawat);
+            // cout<<pesawat.getRefPos().getX()<<" "<<pesawat.getRefPos().getY()<<endl;
+            if(pesawat.getRefPos().getX() <= 0)
+                pesawat.setPos(Pixel(xend, 0));
+            usleep(800);
+        }
     }
 };
 

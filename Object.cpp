@@ -31,12 +31,12 @@ Object::Object(int _x, int _y, std::string filename){
 
     inFile >> nline;
     for (int i = 0; i < nline; ++i) {
-        inFile >> xStart;
+        inFile >>dec>> xStart;
         inFile >> yStart;
-        inFile >> colorStart;
-        inFile >> xEnd;
+        inFile >>hex>> colorStart;
+        inFile >>dec>> xEnd;
         inFile >> yEnd;
-        inFile >> colorEnd;
+        inFile >>hex>> colorEnd;
         Pixel startpx = Pixel(xStart, yStart, colorStart);
         Pixel endpx = Pixel(xEnd, yEnd, colorEnd);
         Line line = Line(startpx, endpx);
