@@ -79,20 +79,22 @@ void Line::fillPixelsVector() {
     int y = yStart;
     const float deltaErr = fabs(deltaY/deltaX);
     float error = 0;
-    for(int x=xStart;x!=xEnd + xStep;x+=xStep){
+    for(int x=xStart;x!=xEnd + xStep;){
         unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
 
         pixelsVector.push_back(Pixel(x, y, color));
 
-        error += deltaErr;
-        while(error >= 1){
-            y += yStep;
-            pixelsVector.push_back(Pixel(x, y, color));
-            error -= 1;
-        }
         if(error >= 0.5){
             y += yStep;
             error -= 1;
+        }
+        else{
+            error += deltaErr;
+            x += xStep;
+            if(error >= 0.5){
+                y += yStep;
+                error -= 1;
+            }
         }
 
         red += redStep;
