@@ -26,7 +26,7 @@ Object::Object(int _x, int _y, std::string filename){
 
     if (!inFile) {
         cout << "\nError opening file.\n";
-        return NULL;
+        exit(1);
     }
     
     int nline;
