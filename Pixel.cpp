@@ -30,6 +30,19 @@ unsigned int Pixel::getColor() {
     return this->col;
 }
 
+void Pixel::setX(int _x){
+    x = _x;
+}
+
+void Pixel::setY(int _y){
+    y = _y;
+}
+
+void Pixel::setPos(int _x, int _y){
+    x = _x;
+    y = _y;
+}
+
 void Pixel::setColor(unsigned int color) {
     this->col = color;
 }
