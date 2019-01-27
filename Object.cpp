@@ -4,7 +4,7 @@ Object::Object(){
 
 }
 
-Object::Object(Pixel _offset = Pixel(0,0), std::string filename){
+Object::Object(int _x, int _y, std::string filename){
 
 }
 

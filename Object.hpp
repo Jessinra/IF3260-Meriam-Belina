@@ -14,7 +14,7 @@ protected:
     vector<vector<Pixel>> img;
 public:
     Object();
-    Object(Pixel, std::string);
+    Object(int, int, std::string);
     Pixel setPos(Pixel);
     vector<Line> getLines();
     vector<vector<Pixel>> getImages();
