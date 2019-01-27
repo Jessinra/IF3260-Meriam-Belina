@@ -1,53 +1,35 @@
 #include "Pixel.hpp"
+#include "Color.hpp"
 
 Pixel::Pixel() {
-    setRow(-999);
-    setCol(-999);
-    setColor(0, 0, 0);  //Default color black (blend with background)
+    x = y = 0;
+    col = Color::BLACK;
 }
 
-Pixel::Pixel(int row, int col) {
-    setRow(row);
-    setCol(col);
-    setColor(255, 255, 255);  //Default color white
+Pixel::Pixel(int _x, int _y) {
+    x = _x;
+    y = _y;
+    col = Color::WHITE;
 }
 
-Pixel::Pixel(int row, int col, unsigned char red, unsigned char green, unsigned char blue) {
-    setRow(row);
-    setCol(col);
-    setColor(red, green, blue);
+Pixel::Pixel(int _x, int _y, unsigned int color) {
+    x = _x;
+    y = _y;
+    col = color;
 }
 
-int Pixel::getRow() {
-    return this->row;
+int Pixel::getX() {
+    return this->x;
 }
 
-int Pixel::getCol() {
+int Pixel::getY() {
+    return this->y;
+}
+
+unsigned int Pixel::getColor() {
     return this->col;
 }
 
-unsigned char Pixel::getRed() {
-    return this->red;
-}
-
-unsigned char Pixel::getGreen() {
-    return this->green;
-}
-
-unsigned char Pixel::getBlue() {
-    return this->blue;
-}
-
-void Pixel::setCol(int col) {
-    this->col = col;
-}
-
-void Pixel::setRow(int row) {
-    this->row = row;
-}
-
-void Pixel::setColor(unsigned char red, unsigned char green, unsigned char blue) {
-    this->red = red;
-    this->green = green;
-    this->blue = blue;
+void Pixel::setColor(unsigned int color) {
+    this->col = color;
 }

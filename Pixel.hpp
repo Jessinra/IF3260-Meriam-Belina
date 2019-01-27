@@ -1,31 +1,28 @@
-#ifndef PIXEL_HPP
-#define PIXEL_HPP
+#ifndef POINT_HPP
+#define POINT_HPP
 
 #include <vector>
 using namespace std;
 
 class Pixel {
    private:
-    int col;
-    int row;
-    unsigned char red;
-    unsigned char green;
-    unsigned char blue;
+    int x;
+    int y;
+    unsigned int col;
 
    public:
     Pixel();
     Pixel(int, int);
-    Pixel(int row, int col, unsigned char red, unsigned char green, unsigned char blue);
+    Pixel(int, int, unsigned int);
 
-    int getRow();
-    int getCol();
-    unsigned char getRed();
-    unsigned char getGreen();
-    unsigned char getBlue();
+    int getX();
+    int getY();
+    unsigned int getColor();
 
-    void setRow(int);
-    void setCol(int);
-    void setColor(unsigned char red, unsigned char green, unsigned char blue);
+    void setX(int);
+    void setY(int);
+    void setPos(int, int);
+    void setColor(unsigned int);
 };
 
 #endif
