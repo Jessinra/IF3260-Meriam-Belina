@@ -33,8 +33,6 @@ const vector<Pixel> & Line::getRefPixelsVector() const{
 
 void Line::fillPixelsVector() {
     // Bresenham's line algorithm with gradient coloring
-
-    Pixel* pixel;
     
     pixelsVector.clear();
 
@@ -45,8 +43,62 @@ void Line::fillPixelsVector() {
     int yEnd = this->getEndPixel().getY();
 
     // Color section
-    unsigned int colorStart = this->getStartPixel().getColor();
-    unsigned int colorEnd = this->getEndPixel().getColor();
+    int colorStart = this->getStartPixel().getColor();
+    int colorEnd = this->getEndPixel().getColor();
+
+    //Setup Const
+    const float deltaX = xEnd - xStart;
+    const float deltaY = yEnd - yStart;
+    const float deltaRed = ((colorEnd & 0xff0000) - (colorStart & 0xff0000)) >> 16;
+    const float deltaGreen = ((colorEnd & 0xff00) - (colorStart & 0xff00)) >> 8;
+    const float deltaBlue = ((colorEnd & 0xff) - (colorStart & 0xff));
+    const float manhattanDist = fabs(deltaX) + fabs(deltaY)+1;
+    const float redStep = deltaRed / manhattanDist;
+    const float greenStep = deltaGreen / manhattanDist;
+    const float blueStep = deltaBlue / manhattanDist;
+    const int xStep = deltaX>=0?1 : -1;
+    const int yStep = deltaY>=0?1 : -1;
+
+    float red = (colorStart & 0xff0000)>>16;
+    float green = (colorStart & 0xff00)>>8;
+    float blue = colorStart & 0xff;
+
+    if(xStart == xEnd){
+        for(int y = yStart;y != yEnd + yStep;y += yStep){
+            unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
+
+            pixelsVector.push_back(Pixel(xStart, y, color));
+
+            red += redStep;
+            green += greenStep;
+            blue += blueStep;
+        }
+        return;
+    }
+
+    const float deltaErr = fabs(deltaY/deltaX);
+    float error = 0;
+
+    cerr<<manhattanDist<<" "<<redStep<<" "<<greenStep<<" "<<blueStep<<endl;
+    int y = yStart;
+    for(int x=xStart;x!=xEnd + xStep;x+=xStep){
+        unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
+
+        pixelsVector.push_back(Pixel(x, y, color));
+
+        error += deltaErr;
+        if(error >= 0.5){
+            y += yStep;
+            error -= 1;
+        }
+
+        red += redStep;
+        green += greenStep;
+        blue += blueStep;
+    }
+
+
+    /* Jessin Part :/
 
     const bool isSteep = (abs(xEnd - xStart) > abs(yEnd - yStart));
 
@@ -61,13 +113,6 @@ void Line::fillPixelsVector() {
         std::swap(yStart, yEnd);
         std::swap(xStart, xEnd);
     }
-
-    //Setup Const
-    const float deltaX = fabs(xEnd - xStart);
-    const float deltaY = yEnd - yStart;
-    const float deltaRed = ((colorEnd & 0xff0000) - (colorStart & 0xff0000)) >> 16;
-    const float deltaGreen = ((colorEnd & 0xff00) - (colorStart & 0xff00)) >> 8;
-    const float deltaBlue = ((colorEnd & 0xff) - (colorStart & 0xff));
 
     const int colStep = (xStart < xEnd) ? 1 : -1;
     const float manhattanDist = fabs(deltaX + deltaY);
@@ -105,6 +150,7 @@ void Line::fillPixelsVector() {
             error += deltaY;
         }
     }
+    */
 }
 
 // void Line::drawLine(char* frameBuffer) {
