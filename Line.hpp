@@ -2,7 +2,8 @@
 #define LINE_HPP
 
 #include <vector>
-#include <math.h>
+#include <cmath>
+#include <cstdlib>
 
 #include "Pixel.hpp"
 using namespace std;
