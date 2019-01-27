@@ -14,6 +14,10 @@ protected:
 public:
     Object();
     Object(int, int, std::string);
+    void moveLeft(int);
+    void moveRight(int);
+    void moveUp(int);
+    void moveDown(int);
     void setPos(Pixel); // change setPos to void
     vector<Line> getLines() const;
     vector<vector<uint32_t>> getImages() const;

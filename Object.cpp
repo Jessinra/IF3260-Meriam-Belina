@@ -52,8 +52,23 @@ Object::Object(int _x, int _y, std::string filename){
 }
 
 void Object::setPos(Pixel __offset){
-    offset.setX(__offset.getX());
-    offset.setY(__offset.getY());
+    offset = __offset;
+}
+
+void Object::moveLeft(int speed){
+    offset.setX(offset.getX() - speed);
+}
+
+void Object::moveRight(int speed){
+    offset.setX(offset.getX() + speed);
+}
+
+void Object::moveUp(int speed){
+    offset.setY(offset.getY() - speed);
+}
+
+void Object::moveDown(int speed){
+    offset.setY(offset.getY() + speed);
 }
 
 vector<Line> Object::getLines() const{
