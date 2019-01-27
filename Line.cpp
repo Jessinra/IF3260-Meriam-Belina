@@ -33,8 +33,6 @@ const vector<Pixel> & Line::getRefPixelsVector() const{
 
 void Line::fillPixelsVector() {
     // Bresenham's line algorithm with gradient coloring
-
-    Pixel* pixel;
     
     pixelsVector.clear();
 
@@ -45,142 +43,57 @@ void Line::fillPixelsVector() {
     int yEnd = this->getEndPixel().getY();
 
     // Color section
-    unsigned int colorStart = this->getStartPixel().getColor();
-    unsigned int colorEnd = this->getEndPixel().getColor();
-
-    const bool isSteep = (abs(xEnd - xStart) > abs(yEnd - yStart));
-
-    // Change orientation
-    if (isSteep) {
-        std::swap(xStart, yStart);
-        std::swap(xEnd, yEnd);
-    }
-
-    // Change starting point
-    if (yStart > yEnd) {
-        std::swap(yStart, yEnd);
-        std::swap(xStart, xEnd);
-    }
+    int colorStart = this->getStartPixel().getColor();
+    int colorEnd = this->getEndPixel().getColor();
 
     //Setup Const
-    const float deltaX = fabs(xEnd - xStart);
+    const float deltaX = xEnd - xStart;
     const float deltaY = yEnd - yStart;
     const float deltaRed = ((colorEnd & 0xff0000) - (colorStart & 0xff0000)) >> 16;
     const float deltaGreen = ((colorEnd & 0xff00) - (colorStart & 0xff00)) >> 8;
     const float deltaBlue = ((colorEnd & 0xff) - (colorStart & 0xff));
-
-    const int colStep = (xStart < xEnd) ? 1 : -1;
-    const float manhattanDist = fabs(deltaX + deltaY);
+    const float manhattanDist = fabs(deltaX) + fabs(deltaY)+1;
     const float redStep = deltaRed / manhattanDist;
     const float greenStep = deltaGreen / manhattanDist;
     const float blueStep = deltaBlue / manhattanDist;
+    const int xStep = deltaX>=0?1 : -1;
+    const int yStep = deltaY>=0?1 : -1;
 
-    // Setup temp variables
-    float error = deltaY / 2.0f;
-    int col = xStart;
-    unsigned char red = (colorStart & 0xff0000)>>16;
-    unsigned char green = (colorStart & 0xff00)>>8;
-    unsigned char blue = colorStart & 0xff;
+    float red = (colorStart & 0xff0000)>>16;
+    float green = (colorStart & 0xff00)>>8;
+    float blue = colorStart & 0xff;
 
-    // Iterating the longer axis (x or y who has larger delta)
-    for (int row = yStart; row < yEnd; row++) {
-        // Calculate current color
+    if(xStart == xEnd){
+        for(int y = yStart;y != yEnd + yStep;y += yStep){
+            unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
+
+            pixelsVector.push_back(Pixel(xStart, y, color));
+
+            red += redStep;
+            green += greenStep;
+            blue += blueStep;
+        }
+        return;
+    }
+
+    const float deltaErr = fabs(deltaY/deltaX);
+    float error = 0;
+
+    cerr<<manhattanDist<<" "<<redStep<<" "<<greenStep<<" "<<blueStep<<endl;
+    int y = yStart;
+    for(int x=xStart;x!=xEnd + xStep;x+=xStep){
+        unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
+
+        pixelsVector.push_back(Pixel(x, y, color));
+
+        error += deltaErr;
+        if(error >= 0.5){
+            y += yStep;
+            error -= 1;
+        }
+
         red += redStep;
         green += greenStep;
         blue += blueStep;
-
-        // Add pixel to vector
-        unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
-        if (isSteep) {
-            pixel = new Pixel(col, row, color);
-        } else {
-            pixel = new Pixel(row, col, color);
-        }
-        pixelsVector.push_back(*pixel);
-
-        // Calculate error, decide to move aside or not for next step
-        error -= deltaX;
-        if (error < 0) {
-            col += colStep;
-            error += deltaY;
-        }
     }
 }
-
-// void Line::drawLine(char* frameBuffer) {
-//     // Bresenham's line algorithm with gradient coloring
-
-//     Pixel* pixel;
-
-//     // Position section
-//     int colStart = this->getStartPixel().getX();
-//     int rowStart = this->getStartPixel().getY();
-//     int colEnd = this->getEndPixel().getX();
-//     int rowEnd = this->getEndPixel().getY();
-
-//     // Color section
-//     unsigned char redStart = this->getStartPixel().getRed();
-//     unsigned char greenStart = this->getStartPixel().getGreen();
-//     unsigned char blueStart = this->getStartPixel().getBlue();
-//     unsigned char redEnd = this->getEndPixel().getRed();
-//     unsigned char greenEnd = this->getEndPixel().getGreen();
-//     unsigned char blueEnd = this->getEndPixel().getBlue();
-
-//     const bool isSteep = (fabs(colEnd - colStart) > fabs(rowEnd - rowStart));
-
-//     // Change orientation
-//     if (isSteep) {
-//         std::swap(rowStart, colStart);
-//         std::swap(rowEnd, colEnd);
-//     }
-
-//     // Change starting point
-//     if (rowStart > rowEnd) {
-//         std::swap(rowStart, rowEnd);
-//         std::swap(colStart, colEnd);
-//     }
-
-//     //Setup Const
-//     const float deltaCol = fabs(colEnd - colStart);
-//     const float deltaRow = rowEnd - rowStart;
-//     const float deltaRed = redEnd - redStart;
-//     const float deltaGreen = greenEnd - greenStart;
-//     const float deltaBlue = blueEnd - blueStart;
-
-//     const int colStep = (colStart < colEnd) ? 1 : -1;
-//     const float manhattanDist = fabs(deltaCol + deltaRow);
-//     const float redStep = deltaRed / manhattanDist;
-//     const float greenStep = deltaGreen / manhattanDist;
-//     const float blueStep = deltaBlue / manhattanDist;
-
-//     // Setup temp variables
-//     float error = deltaRow / 2.0f;
-//     int col = colStart;
-//     unsigned char red = redStart;
-//     unsigned char green = greenStart;
-//     unsigned char blue = blueStart;
-
-//     // Iterating the longer axis (x or y who has larger delta)
-//     for (int row = rowStart; row < rowEnd; row++) {
-
-//         // Calculate current color
-//         red += redStep;
-//         green += greenStep;
-//         blue += blueStep;
-
-//         // Draw pixel
-//         if (isSteep) {
-//             pixel = new Pixel(col, row, floor(red), floor(green), floor(blue));
-//         } else {
-//             pixel = new Pixel(row, col, floor(red), floor(green), floor(blue));
-//         }
-//         pixel->putPixel(frameBuffer);
-
-//         // Calculate error, decide to move aside or not for next step
-//         error -= deltaCol;
-//         if (error < 0) {
-//             col += colStep;
-//             error += deltaRow;
-//         }
-//     }
-// }
