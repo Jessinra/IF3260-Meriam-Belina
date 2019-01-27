@@ -22,22 +22,23 @@ Object::Object(int _x, int _y, std::string filename){
     }
     
     int nline;
-    int xstart;
-    int ystart;
-    int xend;
-    int yend;
-    unsigned int colstart, colend;
+    int xStart;
+    int yStart;
+    int xEnd;
+    int yEnd;
+    unsigned int colorStart;
+    unsigned int colorEnd;
 
     inFile >> nline;
     for (int i = 0; i < nline; ++i) {
-        inFile >> xstart;
-        inFile >> ystart;
-        inFile >> colend;
-        inFile >> xend;
-        inFile >> yend;
-        inFile >> colend;
-        Pixel startpx = Pixel(xstart, ystart, colstart);
-        Pixel endpx = Pixel(xend, yend, colend);
+        inFile >> xStart;
+        inFile >> yStart;
+        inFile >> colorStart;
+        inFile >> xEnd;
+        inFile >> yEnd;
+        inFile >> colorEnd;
+        Pixel startpx = Pixel(xStart, yStart, colorStart);
+        Pixel endpx = Pixel(xEnd, yEnd, colorEnd);
         Line line = Line(startpx, endpx);
         lines.push_back(line);
     }
@@ -75,7 +76,6 @@ Pixel Object::getPos() const{
 const vector<Line> & Object::getRefLines() const{
     return lines;
 }
-
 
 const Pixel & Object::getRefPos() const{
     return offset;
