@@ -12,6 +12,7 @@
 #include <vector>
 #include "Pixel.hpp"
 #include "Line.hpp"
+#include "Object.hpp"
 
 class Master{
 protected:
@@ -43,6 +44,7 @@ public:
     void moveWindowUp();
     void draw(int, int, int**, int, int);
     void draw(int, int, const vector<vector<int> > &);
+    void drawObject(const Object &);
     void drawPixel(int, int, const Pixel &);
     void drawLine(int, int, const Line &);
     void drawPixels(int, int, Pixel*, int);

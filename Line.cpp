@@ -97,6 +97,8 @@ void Line::fillPixelsVector() {
             }
         }
 
+        if(y < 0) break;
+
         red += redStep;
         green += greenStep;
         blue += blueStep;

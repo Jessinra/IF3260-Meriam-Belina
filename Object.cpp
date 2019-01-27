@@ -43,6 +43,13 @@ Object::Object(int _x, int _y, std::string filename){
         lines.push_back(line);
     }
     inFile.close();
+
+    // for(const Line &x : lines){
+    //     for(const Pixel &y : x.getRefPixelsVector()){
+    //         cout<<"("<<y.getX()<<", "<<y.getY()<<") ";
+    //     }
+    //     cout<<endl;
+    // }
 }
 
 void Object::setPos(Pixel __offset){

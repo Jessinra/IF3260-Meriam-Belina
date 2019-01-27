@@ -89,9 +89,9 @@ void Master::draw(int offsetx, int offsety, int **img, int height, int width) {
 }
 
 void Master::draw(int offsetx, int offsety, const vector<vector<int> > &img){
-    for(int y = max(0, offsety); y < (int)img.size(); y++) {
+    for(int y = max(0, -offsety); y < (int)img.size(); y++) {
         if(y + offsety >= this->yend) break;
-        for(int x = max(0, offsetx); x < img[y].size(); x++) {
+        for(int x = max(0, -offsetx); x < img[y].size(); x++) {
             if(x + offsetx >= this->xend) break;
             assignColor(x + offsetx, y + offsety, img[y][x]);
         }
@@ -99,13 +99,23 @@ void Master::draw(int offsetx, int offsety, const vector<vector<int> > &img){
 }
 
 void Master::drawPixel(int offsetx, int offsety, const Pixel &pix){
-    if(offsetx >=0 && offsetx < this->xend && offsety >=0 && offsety < this->yend)
-        assignColor(offsetx + pix.getX(), offsety + pix.getY(), pix.getColor());
+    int x = offsetx + pix.getX();
+    int y = offsety + pix.getY();
+    if(x >=0 && x < this->xend && y >=0 && y < this->yend)
+        assignColor(x, y, pix.getColor());
 }
 
 void Master::drawLine(int offsetx, int offsety, const Line &line){
     for(const Pixel &pix : line.getRefPixelsVector()){
         drawPixel(offsetx, offsety, pix);
+    }
+}
+
+void Master::drawObject(const Object& obj){
+    int offx = obj.getRefPos().getX();
+    int offy = obj.getRefPos().getY();
+    for(const Line &ln : obj.getRefLines()){
+        drawLine(offx, offy, ln);
     }
 }
 
