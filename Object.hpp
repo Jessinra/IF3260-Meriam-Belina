@@ -5,12 +5,15 @@
 #include <string>
 #include "Line.hpp"
 #include "Pixel.hpp"
+#include "Object.hpp"
 
 class Object{
 // Suatu object tersusun atas garix matrix of pixel
 protected:
     Pixel offset;
     vector<Line> lines;
+    int width;
+    int height;
 public:
     Object();
     Object(int, int, std::string);
@@ -20,10 +23,8 @@ public:
     void moveDown(int);
     void setPos(Pixel); // change setPos to void
     vector<Line> getLines() const;
-    vector<vector<uint32_t>> getImages() const;
     Pixel getPos() const;
     const vector<Line> & getRefLines() const;
-    const vector<vector<uint32_t>> & getRefImages() const;
     const Pixel & getRefPos() const;
 };
 

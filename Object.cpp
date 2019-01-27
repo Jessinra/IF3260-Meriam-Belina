@@ -4,14 +4,6 @@
 #include <fstream>
 
 Object::Object(){
-    // initialize offset
-    offset.setX(0);
-    offset.setY(0);
-    offset.setColor(Color::WHITE);
-
-    // initialize lines
-    lines[0].setStartPixel(offset);
-    lines[0].setEndPixel(offset);
 }
 
 Object::Object(int _x, int _y, std::string filename){
@@ -34,17 +26,18 @@ Object::Object(int _x, int _y, std::string filename){
     int ystart;
     int xend;
     int yend;
-    unsigned int color;
+    unsigned int colstart, colend;
 
     inFile >> nline;
     for (int i = 0; i < nline; ++i) {
         inFile >> xstart;
         inFile >> ystart;
+        inFile >> colend;
         inFile >> xend;
         inFile >> yend;
-        inFile >> color;
-        Pixel startpx = Pixel(xstart, ystart, color);
-        Pixel endpx = Pixel(xend, yend, color);
+        inFile >> colend;
+        Pixel startpx = Pixel(xstart, ystart, colstart);
+        Pixel endpx = Pixel(xend, yend, colend);
         Line line = Line(startpx, endpx);
         lines.push_back(line);
     }
