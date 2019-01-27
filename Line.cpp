@@ -91,7 +91,7 @@ void Line::fillPixelsVector() {
 
         // Add pixel to vector
         unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
-        if (!isSteep) {
+        if (isSteep) {
             pixel = new Pixel(col, row, color);
         } else {
             pixel = new Pixel(row, col, color);

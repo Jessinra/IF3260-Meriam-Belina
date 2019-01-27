@@ -48,13 +48,13 @@ Master::Master(int h, int w){
 
 void Master::assignColor(int x, int y, unsigned int color){
     int location = x * xmultiplier + xadder + y * ymultiplier + yadder;
-    *((unsigned int *) fbp + location) = color;
+    *((unsigned int *) (fbp + location)) = color;
 }
 
 void Master::assignColor(int x1, int y1, int x2, int y2){
     int location1 = x1 * xmultiplier + xadder + y1 * ymultiplier + yadder;
     int location2 = x2 * xmultiplier + xadder + y2 * ymultiplier + yadder;
-    *((unsigned int *) fbp + location1) = *((unsigned int *) fbp + location2);
+    *((unsigned int *) (fbp + location1)) = *((unsigned int *) fbp + location2);
 }
 
 void Master::clearWindow(){
