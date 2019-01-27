@@ -16,7 +16,7 @@ vector<Line> Object::getLines(){
 
 }
 
-vector<vector<Pixel>> Object::getImages(){
+vector<vector<int>> Object::getImages(){
 
 }
 
@@ -24,6 +24,6 @@ const vector<Line> & Object::getRefLines(){
 
 }
 
-const vector<vector<Pixel>> & Object::getRefImages(){
+const vector<vector<int>> & Object::getRefImages(){
 
 }
