@@ -1,8 +1,9 @@
+#include <iostream>
 #include "master.hpp"
 #include "Pixel.hpp"
 
 Master::Master(int h, int w){
-    xend = yend = 0;
+    xstart = ystart = 0;
     yend = h;
     xend = w;
 
@@ -106,8 +107,81 @@ void Master::drawPixel(int offsetx, int offsety, const Pixel &pix){
 }
 
 void Master::drawLine(int offsetx, int offsety, const Line &line){
-    for(const Pixel &pix : line.getRefPixelsVector()){
-        drawPixel(offsetx, offsety, pix);
+    // Bresenham's line algorithm with gradient coloring
+
+    // Position section
+    int xStart = line.getStartPixel().getX();
+    int yStart = line.getStartPixel().getY();
+    int xEnd = line.getEndPixel().getX();
+    int yEnd = line.getEndPixel().getY();
+
+    // Color section
+    int colorStart = line.getStartPixel().getColor();
+    int colorEnd = line.getEndPixel().getColor();
+
+    //Setup Const
+    const float deltaX = xEnd - xStart;
+    const float deltaY = yEnd - yStart;
+    const float deltaRed = ((colorEnd & 0xff0000) - (colorStart & 0xff0000)) >> 16;
+    const float deltaGreen = ((colorEnd & 0xff00) - (colorStart & 0xff00)) >> 8;
+    const float deltaBlue = ((colorEnd & 0xff) - (colorStart & 0xff));
+    const float manhattanDist = fabs(deltaX) + fabs(deltaY)+1;
+    const float redStep = deltaRed / manhattanDist;
+    const float greenStep = deltaGreen / manhattanDist;
+    const float blueStep = deltaBlue / manhattanDist;
+    const int xStep = deltaX>=0?1 : -1;
+    const int yStep = deltaY>=0?1 : -1;
+
+    float red = (colorStart & 0xff0000)>>16;
+    float green = (colorStart & 0xff00)>>8;
+    float blue = colorStart & 0xff;
+
+    if(xStart == xEnd){
+        if(xStart+offsetx >=this->xstart && xStart+offsetx < this->xend){
+            for(int y = yStart;y != yEnd + yStep;y += yStep){
+                unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
+
+                if(offsety+y>=this->ystart && offsety+y<this->yend){
+                    assignColor(offsetx+xStart, offsety+y, color);
+                }
+
+                red += redStep;
+                green += greenStep;
+                blue += blueStep;
+            }
+        }
+        return;
+    }
+
+    int y = yStart;
+    const float deltaErr = fabs(deltaY/deltaX);
+    float error = 0;
+    for(int x=xStart;x!=xEnd + xStep;){
+        unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
+        
+        if(offsetx+x >= this->xstart && offsetx+x < this->xend &&
+            offsety+y >= this->ystart && offsety+y < this->yend){
+            assignColor(offsetx+x, offsety+y, color);
+        }
+
+        if(error >= 0.5){
+            y += yStep;
+            error -= 1;
+        }
+        else{
+            error += deltaErr;
+            x += xStep;
+            if(error >= 0.5){
+                y += yStep;
+                error -= 1;
+            }
+        }
+
+        if(y < 0) break;
+
+        red += redStep;
+        green += greenStep;
+        blue += blueStep;
     }
 }
 

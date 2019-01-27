@@ -58,36 +58,36 @@ Object::Object(int _x, int _y, std::string filename){
         Line line = Line(startpx, endpx);
         lines.push_back(line);
     }
+    speed = 1;
+    dx = dy = 0;
     height = yMax - yMin + 1;
     width = xMax - xMin + 1;
     inFile.close();
+}
 
-    // for(const Line &x : lines){
-    //     for(const Pixel &y : x.getRefPixelsVector()){
-    //         cout<<"("<<y.getX()<<", "<<y.getY()<<") ";
-    //     }
-    //     cout<<endl;
-    // }
+void Object::setSpeed(float _speed){
+    speed = _speed;
 }
 
 void Object::setPos(Pixel __offset){
     offset = __offset;
 }
 
-void Object::moveLeft(int speed){
-    offset.setX(offset.getX() - speed);
+bool Object::outOfWindow(int h, int w){
+    return (offset.getX() >= w || offset.getY() >= h || offset.getX() <= -width || offset.getY()<=-height);
 }
 
-void Object::moveRight(int speed){
-    offset.setX(offset.getX() + speed);
+void Object::setVector(float _dx, float _dy){
+    float sum = sqrt(_dx*_dx + _dy*_dy);
+    if(sum > 0){
+        dx = _dx / sum;
+        dy = _dy / sum;
+    }
 }
 
-void Object::moveUp(int speed){
-    offset.setY(offset.getY() - speed);
-}
-
-void Object::moveDown(int speed){
-    offset.setY(offset.getY() + speed);
+void Object::move(){
+    offset.setX(offset.getX() + dx * speed);
+    offset.setY(offset.getY() + dy * speed);
 }
 
 int Object::getWidth() const{
