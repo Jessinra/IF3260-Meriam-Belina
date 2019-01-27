@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Line.hpp"
 
 Line::Line(Pixel startPixel, Pixel endPixel) {
@@ -33,8 +34,9 @@ const vector<Pixel> & Line::getRefPixelsVector() const{
 void Line::fillPixelsVector() {
     // Bresenham's line algorithm with gradient coloring
 
-    vector<Pixel> pixelsVector = this->getPixelsVector();
     Pixel* pixel;
+    
+    pixelsVector.clear();
 
     // Position section
     int xStart = this->getStartPixel().getX();
@@ -76,21 +78,20 @@ void Line::fillPixelsVector() {
     // Setup temp variables
     float error = deltaY / 2.0f;
     int col = xStart;
-    unsigned char red = colorStart & 0xff0000;
-    unsigned char green = colorStart & 0xff00;
+    unsigned char red = (colorStart & 0xff0000)>>16;
+    unsigned char green = (colorStart & 0xff00)>>8;
     unsigned char blue = colorStart & 0xff;
 
     // Iterating the longer axis (x or y who has larger delta)
     for (int row = yStart; row < yEnd; row++) {
-
         // Calculate current color
         red += redStep;
         green += greenStep;
         blue += blueStep;
 
         // Add pixel to vector
-        unsigned int color = (int)floor(red) << 16 + (int)floor(green) << 8 + (int)floor(blue);
-        if (isSteep) {
+        unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
+        if (!isSteep) {
             pixel = new Pixel(col, row, color);
         } else {
             pixel = new Pixel(row, col, color);

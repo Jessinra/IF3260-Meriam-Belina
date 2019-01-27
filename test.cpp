@@ -1,3 +1,4 @@
+#include <iostream>
 #include "master.hpp"
 #include "Color.hpp"
 
@@ -8,7 +9,10 @@ public:
     Runner(int h = 600, int w = 1000) : Master(h, w) {}
     void start(){
         clearWindow();
-        Line lin = Line(Pixel(0,0, Color::WHITE), Pixel(this->width-1, this->height-1, Color::WHITE));
+        Line lin = Line(Pixel(0,0, Color::WHITE), Pixel(this->xend, this->yend, Color::WHITE));
+        // for(const Pixel &x : lin.getRefPixelsVector()){
+        //     std::cerr<<x.getX()<<" "<<x.getY()<<" "<<x.getColor()<<endl;
+        // }
         drawLine(0, 0, lin);
     }
 };
