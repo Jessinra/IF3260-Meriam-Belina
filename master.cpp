@@ -75,17 +75,28 @@ void Master::moveWindowUp(){
 }
 
 void Master::draw(int offsetx, int offsety, int **img, int height, int width) {
-    for(int i = max(0, offsety); i < height; i++) {
-        if(i + offsety >= this->height) break;
-        for(int j = max(0, offsetx); j < width; j++) {
-            if(j + offsetx >= this->width) break;
-            assignColor(j + offsetx, i + offsety, img[i][j]);
+    for(int y = max(0, offsety); y < height; y++) {
+        if(y + offsety >= this->height) break;
+        for(int x = max(0, offsetx); x < width; x++) {
+            if(x + offsetx >= this->width) break;
+            assignColor(x + offsetx, y + offsety, img[y][x]);
+        }
+    }
+}
+
+void Master::draw(int offsetx, int offsety, const vector<vector<int> > &img){
+    for(int y = max(0, offsety); y < (int)img.size(); y++) {
+        if(y + offsety >= this->height) break;
+        for(int x = max(0, offsetx); x < img[y].size(); x++) {
+            if(x + offsetx >= this->width) break;
+            assignColor(x + offsetx, y + offsety, img[y][x]);
         }
     }
 }
 
 void Master::drawPixel(int offsetx, int offsety, const Pixel &pix){
-    assignColor(offsetx + pix.getX(), offsety + pix.getY(), pix.getColor());
+    if(offsetx >=0 && offsetx < this->width && offsety >=0 && offsety < this->height)
+        assignColor(offsetx + pix.getX(), offsety + pix.getY(), pix.getColor());
 }
 
 void Master::drawLine(int offsetx, int offsety, const Line &line){

@@ -8,7 +8,8 @@
 #include <linux/fb.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
-#include <string.h>
+#include <cstring>
+#include <vector>
 #include "Pixel.hpp"
 #include "Line.hpp"
 
@@ -41,6 +42,7 @@ public:
     void clearWindow(unsigned int);
     void moveWindowUp();
     void draw(int, int, int**, int, int);
+    void draw(int, int, const vector<vector<int> > &);
     void drawPixel(int, int, const Pixel &);
     void drawLine(int, int, const Line &);
     void drawPixels(int, int, Pixel*, int);
