@@ -31,18 +31,27 @@ void Object::setPos(Pixel __offset){
     offset.setY(__offset.getY());
 }
 
-vector<Line> Object::getLines(){
+vector<Line> Object::getLines() const{
     return lines;
 }
 
-vector<vector<int>> Object::getImages(){
+vector<vector<uint32_t>> Object::getImages() const{
     return img;
 }
 
-const vector<Line> & Object::getRefLines(){
-    return *lines;
+Pixel Object::getPos() const{
+
 }
 
-const vector<vector<int>> & Object::getRefImages(){
-    return *img;
+const vector<Line> & Object::getRefLines() const{
+    return lines;
+}
+
+const vector<vector<uint32_t>> & Object::getRefImages() const{
+    return img;
+}
+
+
+const Pixel & Object::getRefPos() const{
+
 }
