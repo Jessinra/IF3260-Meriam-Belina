@@ -1,3 +1,6 @@
+#ifndef LINE_HPP
+#define LINE_HPP
+
 #include <vector>
 #include <math.h>
 
@@ -31,3 +34,5 @@ class Line{
     // TODO:
     // apply color to fill pixel 
 };
+
+#endif

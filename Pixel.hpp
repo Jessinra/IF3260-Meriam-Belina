@@ -1,3 +1,6 @@
+#ifndef PIXEL_HPP
+#define PIXEL_HPP
+
 #include <vector>
 using namespace std;
 
