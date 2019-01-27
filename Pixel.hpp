@@ -23,6 +23,8 @@ class Pixel {
     void setY(int);
     void setPos(int, int);
     void setColor(unsigned int);
+
+    void putPixel(char* frameBuffer);
 };
 
 #endif

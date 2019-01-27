@@ -46,3 +46,7 @@ void Pixel::setPos(int _x, int _y){
 void Pixel::setColor(unsigned int color) {
     this->col = color;
 }
+
+void Pixel::putPixel(char* frameBuffer){
+    //implement this
+}
