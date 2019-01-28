@@ -25,7 +25,8 @@ public:
         // MoveableObject cannon(meriam);
         planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
         bullets.push_back(MoveableObject(0, -1, 2, peluru));
-        for(int i=1;;i=(i+1)%1200){
+        
+        for(int i=1;;i=(i+1)%1600){
             // for(const MoveableObject & obj : planes)
             //     cout<<"plane "<<obj.getRefPos().getX()<<" "<<obj.getRefPos().getY()<<endl;
             // for(const MoveableObject & obj : bullets)
@@ -46,10 +47,7 @@ public:
             for(pair<MoveableObject, bool> & obj : planes){
                 obj.first.move();
                 if(obj.first.outOfWindow(yend, xend)){
-                    if(!obj.second){
-                        obj.first.setPos(pesawat.getRefPos());
-                        tmpp.push_back(obj);
-                    }
+                    
                 }
                 else{
                     tmpp.push_back(obj);
@@ -58,9 +56,6 @@ public:
             }
             for(MoveableObject & obj : bullets){
                 obj.move();
-                if(obj.outOfWindow(yend, xend)){
-                    obj.setPos(peluru.getRefPos());
-                }
             }
             
             // very slow shit
@@ -73,7 +68,7 @@ public:
                         bisa = false;
                     }
                 }
-                if(bisa){
+                if(bisa && !objb.outOfWindow(yend, xend)){
                     tmpb.push_back(objb);
                 }
             }
