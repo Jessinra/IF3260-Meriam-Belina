@@ -37,6 +37,7 @@ protected:
     int offsetcycle;
 public:
     Master(int, int);
+    bool isInsideWindow(int, int);
     void assignColor(int, int, unsigned int);
     void assignColor(int, int, int, int);
     void clearWindow();

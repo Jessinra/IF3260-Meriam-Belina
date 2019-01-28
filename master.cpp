@@ -47,12 +47,18 @@ Master::Master(int h, int w){
     yadder = vinfo.yoffset * finfo.line_length;
 }
 
+bool Master::isInsideWindow(int x, int y){
+    return x>=xstart && x<xend && y>=ystart && y<yend;
+}
+
 void Master::assignColor(int x, int y, unsigned int color){
+    if(!isInsideWindow(x, y)) return;
     int location = x * xmultiplier + xadder + y * ymultiplier + yadder;
     *((unsigned int *) (fbp + location)) = color;
 }
 
 void Master::assignColor(int x1, int y1, int x2, int y2){
+    if(!isInsideWindow(x1, y1) || !isInsideWindow(x2, y2)) return;
     int location1 = x1 * xmultiplier + xadder + y1 * ymultiplier + yadder;
     int location2 = x2 * xmultiplier + xadder + y2 * ymultiplier + yadder;
     *((unsigned int *) (fbp + location1)) = *((unsigned int *) fbp + location2);
@@ -102,8 +108,7 @@ void Master::draw(int offsetx, int offsety, const vector<vector<int> > &img){
 void Master::drawPixel(int offsetx, int offsety, const Pixel &pix){
     int x = offsetx + pix.getX();
     int y = offsety + pix.getY();
-    if(x >=0 && x < this->xend && y >=0 && y < this->yend)
-        assignColor(x, y, pix.getColor());
+    assignColor(x, y, pix.getColor());
 }
 
 void Master::drawLine(int offsetx, int offsety, const Line &line){
@@ -141,9 +146,7 @@ void Master::drawLine(int offsetx, int offsety, const Line &line){
             for(int y = yStart;y != yEnd + yStep;y += yStep){
                 unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
 
-                if(offsety+y>=this->ystart && offsety+y<this->yend){
-                    assignColor(offsetx+xStart, offsety+y, color);
-                }
+                assignColor(offsetx+xStart, offsety+y, color);
 
                 red += redStep;
                 green += greenStep;
@@ -159,10 +162,7 @@ void Master::drawLine(int offsetx, int offsety, const Line &line){
     for(int x=xStart;x!=xEnd + xStep;){
         unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
         
-        if(offsetx+x >= this->xstart && offsetx+x < this->xend &&
-            offsety+y >= this->ystart && offsety+y < this->yend){
-            assignColor(offsetx+x, offsety+y, color);
-        }
+        assignColor(offsetx+x, offsety+y, color);
 
         if(error >= 0.5){
             y += yStep;
