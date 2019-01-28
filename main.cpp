@@ -1,6 +1,9 @@
 #include <iostream>
+#include <utility>
+#include <ctime>
 #include "master.hpp"
 #include "Object.hpp"
+#include "MoveableObject.hpp"
 
 using namespace std;
 
@@ -14,47 +17,73 @@ public:
         peluru = Object(0, 0, "object_bullet.txt");
     }
     void start() {
-        cout<<meriam.getHeight()<<" "<<meriam.getWidth()<<endl;
-        cout<<peluru.getHeight()<<" "<<peluru.getWidth()<<endl;
         pesawat.setPos(Pixel(xend, 0));
-        pesawat.setVector(-1, 0);
-        pesawat.setSpeed(1);
         meriam.setPos(Pixel((xend - meriam.getWidth())/2, yend - meriam.getHeight() - 2));
         peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
-        peluru.setVector(0, -1);
-        peluru.setSpeed(2);
-        bool hitted = false;
-        while(true){
-            // clear Window
+        vector<pair<MoveableObject, bool> > planes;
+        vector<MoveableObject> bullets;
+        // MoveableObject cannon(meriam);
+        planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
+        bullets.push_back(MoveableObject(0, -1, 2, peluru));
+        for(int i=1;;i=(i+1)%1200){
+            // for(const MoveableObject & obj : planes)
+            //     cout<<"plane "<<obj.getRefPos().getX()<<" "<<obj.getRefPos().getY()<<endl;
+            // for(const MoveableObject & obj : bullets)
+            //     cout<<"peluru "<<obj.getRefPos().getX()<<" "<<obj.getRefPos().getY()<<endl;
+
+            // draw
             clearWindow();
 
-            // move pesawat
-            drawObject(pesawat);
+            for(const pair<MoveableObject, bool> & obj : planes)
+                drawObject(obj.first);
+            for(const MoveableObject & obj : bullets)
+                drawObject(obj);
             drawObject(meriam);
-            drawObject(peluru);
-            pesawat.move();
-            peluru.move();
 
-            if(pesawat.outOfWindow(yend, xend)){
-                if(hitted){
-                    hitted = false;
-                    pesawat.setVector(-1, 0);
+            // move shit
+            vector<pair<MoveableObject, bool> >tmpp;
+            vector<MoveableObject>tmpb;
+            for(pair<MoveableObject, bool> & obj : planes){
+                obj.first.move();
+                if(obj.first.outOfWindow(yend, xend)){
+                    if(!obj.second){
+                        obj.first.setPos(pesawat.getRefPos());
+                        tmpp.push_back(obj);
+                    }
                 }
-                pesawat.setPos(Pixel(xend, 0));
+                else{
+                    tmpp.push_back(obj);
+                }
+                
             }
-
-            if(peluru.outOfWindow(yend, xend)){
-                peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
-            }
-
-            if(overlap(pesawat, peluru)){
-                if(!hitted){
-                    hitted = true;
-                    pesawat.setVector(-1, 2);
-                    // pesawat.setPos(Pixel(xend, 0));
-                    peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
+            for(MoveableObject & obj : bullets){
+                obj.move();
+                if(obj.outOfWindow(yend, xend)){
+                    obj.setPos(peluru.getRefPos());
                 }
             }
+            
+            // very slow shit
+            for(const MoveableObject & objb : bullets){
+                bool bisa = true;
+                for(pair<MoveableObject, bool> & objp : tmpp){
+                    if(overlap(objp.first, objb)){
+                        objp.first.setVector(-1, 2);
+                        objp.second = true;
+                        bisa = false;
+                    }
+                }
+                if(bisa){
+                    tmpb.push_back(objb);
+                }
+            }
+            planes = tmpp;
+            bullets = tmpb;
+
+            if(i % 400 == 0)
+                bullets.push_back(MoveableObject(0, -1, 2, peluru));
+            if(i % 800 == 0)
+                planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
 
             usleep(6000);
         }
@@ -63,12 +92,12 @@ public:
         int a,b,c,d,e,f,g,h;
         a = p.getRefPos().getX();
         b = p.getRefPos().getY();
-        c = a + p.getWidth();
-        d = b + p.getHeight();
+        c = a + p.getWidth() - 1;
+        d = b + p.getHeight() - 1;
         e = q.getRefPos().getX();
         f = q.getRefPos().getY();
-        g = e + q.getWidth();
-        h = f + q.getHeight();
+        g = e + q.getWidth() - 1;
+        h = f + q.getHeight() - 1;
         if(a > g || e > c) return false;
         if(b > h || f > d) return false;
         return true;

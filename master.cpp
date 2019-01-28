@@ -86,9 +86,9 @@ void Master::moveWindowUp(){
 }
 
 void Master::draw(int offsetx, int offsety, int **img, int height, int width) {
-    for(int y = max(0, offsety); y < height; y++) {
+    for(int y = max(0, -offsety); y < height; y++) {
         if(y + offsety >= this->yend) break;
-        for(int x = max(0, offsetx); x < width; x++) {
+        for(int x = max(0, -offsetx); x < width; x++) {
             if(x + offsetx >= this->xend) break;
             assignColor(x + offsetx, y + offsety, img[y][x]);
         }
@@ -176,8 +176,6 @@ void Master::drawLine(int offsetx, int offsety, const Line &line){
                 error -= 1;
             }
         }
-
-        if(y < 0) break;
 
         red += redStep;
         green += greenStep;
