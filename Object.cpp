@@ -56,15 +56,9 @@ Object::Object(float _x, float _y, std::string filename){
         Line line = Line(startpx, endpx);
         lines.push_back(line);
     }
-    speed = 1;
-    dx = dy = 0;
     height = yMax - yMin + 1;
     width = xMax - xMin + 1;
     inFile.close();
-}
-
-void Object::setSpeed(float _speed){
-    speed = _speed;
 }
 
 void Object::setPos(Pixel __offset){
@@ -73,27 +67,6 @@ void Object::setPos(Pixel __offset){
 
 bool Object::outOfWindow(int h, int w){
     return (offset.getX() >= w || offset.getY() >= h || offset.getX() <= -width || offset.getY()<=-height);
-}
-
-void Object::setVector(float _dx, float _dy){
-    float sum = sqrt(_dx*_dx + _dy*_dy);
-    if(sum > 0){
-        dx = _dx / sum;
-        dy = _dy / sum;
-    }
-}
-
-void Object::move(){
-    offset.setX(offset.getX() + dx * speed);
-    offset.setY(offset.getY() + dy * speed);
-}
-
-float Object::getDx() const{
-    return dx;
-}
-
-float Object::getDy() const{
-    return dy;
 }
 
 int Object::getWidth() const{

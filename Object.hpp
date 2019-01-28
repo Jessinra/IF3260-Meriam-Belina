@@ -14,20 +14,13 @@ protected:
     vector<Line> lines;
     int width;
     int height;
-    float speed;
-    float dx, dy; // vector normal
 public:
     Object();
     Object(float, float, std::string);
     bool outOfWindow(int, int);
-    void setVector(float, float);
-    void setSpeed(float);
-    void move();
     void setPos(Pixel); // change setPos to void
     vector<Line> getLines() const;
     Pixel getPos() const;
-    float getDx() const;
-    float getDy() const;
     int getWidth() const;
     int getHeight() const;
     const vector<Line> & getRefLines() const;
