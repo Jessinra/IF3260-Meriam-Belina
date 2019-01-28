@@ -65,7 +65,7 @@ void Object::setPos(Pixel __offset){
     offset = __offset;
 }
 
-bool Object::outOfWindow(int h, int w){
+bool Object::outOfWindow(int h, int w) const{
     return (offset.getX() >= w || offset.getY() >= h || offset.getX() <= -width || offset.getY()<=-height);
 }
 

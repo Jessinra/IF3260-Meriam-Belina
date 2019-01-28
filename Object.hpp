@@ -17,7 +17,7 @@ protected:
 public:
     Object();
     Object(float, float, std::string);
-    bool outOfWindow(int, int);
+    bool outOfWindow(int, int) const;
     void setPos(Pixel); // change setPos to void
     vector<Line> getLines() const;
     Pixel getPos() const;
