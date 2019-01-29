@@ -11,6 +11,26 @@
 
 using namespace std;
 
+/* Aku sedih */
+int deg = 0;
+bool keepreading;
+
+void *readinput(void *threadid){
+    char c; 
+    while(keepreading){
+        c=getchar();
+        if(c == 'd' && deg <= 100){
+            deg += 10;
+        }
+        else if(c == 'a' && deg >= -100){
+            deg -= 10;
+        }
+        usleep(10000);
+    }
+    pthread_exit(NULL);
+}
+/* Aku sedih */
+
 class Runner : public Master{
 protected:
     Object pesawat, meriam, peluru;
@@ -21,20 +41,21 @@ public:
         peluru = Object(0, 0, "object_bullet.txt");
     }
     void start() {
+        int sudut_meriam = 0;
+        float titik_acuan_x, titik_acuan_y;
+        titik_acuan_x = xend/2.0;
+        titik_acuan_y = yend - 2;
+
         pesawat.setPos(Pixel(xend, 0));
-        meriam.setPos(Pixel((xend - meriam.getWidth())/2, yend - meriam.getHeight() - 2));
-        peluru.setPos(Pixel((xend - peluru.getWidth())/2, yend - meriam.getHeight() - peluru.getHeight() - 2));
+        meriam.setPos(Pixel((xend - meriam.getWidth())/2.0, yend - meriam.getHeight() - 2));
+        peluru.setPos(Pixel((xend - peluru.getWidth())/2.0, yend - meriam.getHeight() - peluru.getHeight() - 2));
         vector<pair<MoveableObject, bool> > planes;
         vector<MoveableObject> bullets;
-        // MoveableObject cannon(meriam);
+        MoveableObject cannon = meriam;
         planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
         bullets.push_back(MoveableObject(0, -1, 2, peluru));
         
-        for(int i=1;;i=(i+1)%2000){
-            // for(const MoveableObject & obj : planes)
-            //     cout<<"plane "<<obj.getRefPos().getX()<<" "<<obj.getRefPos().getY()<<endl;
-            // for(const MoveableObject & obj : bullets)
-            //     cout<<"peluru "<<obj.getRefPos().getX()<<" "<<obj.getRefPos().getY()<<endl;
+        for(int i=1;;i=(i+1)%1500){
 
             // draw
             clearWindow();
@@ -43,9 +64,33 @@ public:
                 drawObject(obj.first);
             for(const MoveableObject & obj : bullets)
                 drawObject(obj);
-            drawObject(meriam);
+            drawObject(cannon);
 
-            // move shit
+            // move and rotate :/
+            if(deg!=0){
+                if(deg > 0){
+                    if(sudut_meriam <= 40){
+                        sudut_meriam += 10;
+                        cannon = MoveableObject(meriam);
+                        cannon.selfRotation(titik_acuan_x, titik_acuan_y, sudut_meriam);
+                        deg -= 10;
+                    }
+                    else{
+                        deg = 0;
+                    }
+                }
+                else{
+                    if(sudut_meriam >= -40){
+                        sudut_meriam -= 10;
+                        cannon = MoveableObject(meriam);
+                        cannon.selfRotation(titik_acuan_x, titik_acuan_y, sudut_meriam);
+                        deg += 10;
+                    }
+                    else{
+                        deg = 0;
+                    }
+                }
+            }
             vector<pair<MoveableObject, bool> >tmpp;
             vector<MoveableObject>tmpb;
             for(pair<MoveableObject, bool> & obj : planes){
@@ -79,8 +124,13 @@ public:
             planes = tmpp;
             bullets = tmpb;
 
-            if(i % 400 == 0)
-                bullets.push_back(MoveableObject(0, -1, 2, peluru));
+            if(i % 300 == 0){
+                MoveableObject tmp = MoveableObject(peluru);
+                tmp.setSpeed(2);
+                tmp.selfRotation(titik_acuan_x, titik_acuan_y, sudut_meriam);
+                tmp.setVector(sin(sudut_meriam*PI/180), -cos(sudut_meriam*PI/180));
+                bullets.push_back(tmp);
+            }
             if(i % 500 == 0)
                 planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
 
@@ -104,6 +154,7 @@ public:
 };
 
 int main(){
+    /* non-newline input */
     struct termios org_opts, new_opts;
     int res=0;
     res=tcgetattr(STDIN_FILENO, &org_opts);
@@ -112,9 +163,17 @@ int main(){
     new_opts.c_lflag &= ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ECHOPRT | ECHOKE | ICRNL);
     tcsetattr(STDIN_FILENO, TCSANOW, &new_opts);
     
+    /* Multithreading part */
+    pthread_t thread;
+    int rc, id = 0;
+    keepreading = true;
+    rc = pthread_create(&thread, NULL, readinput, (void *)id);
+
     Runner run;
     run.start();
     
+    /* close hehe */
+    pthread_exit(NULL);
     res=tcsetattr(STDIN_FILENO, TCSANOW, &org_opts);
     assert(res == 0);
     return 0;

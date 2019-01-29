@@ -1,6 +1,7 @@
 #include <iostream>
 #include "master.hpp"
 #include "Pixel.hpp"
+#include <termios.h>
 
 Master::Master(int h, int w){
     xstart = ystart = 0;
