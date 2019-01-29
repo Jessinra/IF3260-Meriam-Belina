@@ -44,6 +44,16 @@ void MoveableObject::move(){
     offset.setY(offset.getY() + dy * speed);
 }
 
+void MoveableObject::rotation(float x, float y, float theta){
+    float sinTheta = sin(theta);
+    float cosTheta = cos(theta);
+
+    for (Line& line: lines) {
+        line.getStartPixel().rotation(x, y, theta);
+        line.getEndPixel().rotation(x, y, theta);
+    }
+}
+
 float MoveableObject::getDx() const{
     return dx;
 }

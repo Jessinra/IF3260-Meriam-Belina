@@ -1,3 +1,4 @@
+#include <cmath>
 #include "Pixel.hpp"
 #include "Color.hpp"
 
@@ -45,4 +46,18 @@ void Pixel::setPos(float _x, float _y){
 
 void Pixel::setColor(unsigned int color) {
     this->col = color;
+}
+
+void Pixel::rotation(float pointX, float pointY, float theta) {
+    x -= pointX;
+    y -= pointY;
+
+    float sinTheta = sin(theta);
+    float cosTheta = cos(theta);
+
+    float xnew = x*cosTheta - y*sinTheta;
+    float ynew = x*sinTheta + y*cosTheta;
+
+    x = xnew + pointX;
+    y = ynew + pointY;
 }
