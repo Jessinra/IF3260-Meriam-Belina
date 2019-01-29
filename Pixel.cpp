@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 #include "Pixel.hpp"
 #include "Color.hpp"
 
@@ -58,8 +59,8 @@ Pixel Pixel::rotation(float pointX, float pointY, float theta) {
     float sinTheta = sin(theta*PI/180);
     float cosTheta = cos(theta*PI/180);
 
-    float xnew = x*cosTheta - y*sinTheta;
-    float ynew = x*sinTheta + y*cosTheta;
+    float xnew = resultX*cosTheta - resultY*sinTheta;
+    float ynew = resultX*sinTheta + resultY*cosTheta;
 
     resultX = xnew + pointX;
     resultY = ynew + pointY;
