@@ -4,6 +4,10 @@
 #include "master.hpp"
 #include "Object.hpp"
 #include "MoveableObject.hpp"
+#include <termios.h>
+#include <unistd.h>
+#include <assert.h>
+#include <string.h>
 
 using namespace std;
 
@@ -26,7 +30,7 @@ public:
         planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
         bullets.push_back(MoveableObject(0, -1, 2, peluru));
         
-        for(int i=1;;i=(i+1)%1600){
+        for(int i=1;;i=(i+1)%2000){
             // for(const MoveableObject & obj : planes)
             //     cout<<"plane "<<obj.getRefPos().getX()<<" "<<obj.getRefPos().getY()<<endl;
             // for(const MoveableObject & obj : bullets)
@@ -77,7 +81,7 @@ public:
 
             if(i % 400 == 0)
                 bullets.push_back(MoveableObject(0, -1, 2, peluru));
-            if(i % 800 == 0)
+            if(i % 500 == 0)
                 planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
 
             usleep(6000);
@@ -100,7 +104,18 @@ public:
 };
 
 int main(){
+    struct termios org_opts, new_opts;
+    int res=0;
+    res=tcgetattr(STDIN_FILENO, &org_opts);
+    assert(res == 0);
+    memcpy(&new_opts, &org_opts, sizeof(new_opts));
+    new_opts.c_lflag &= ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ECHOPRT | ECHOKE | ICRNL);
+    tcsetattr(STDIN_FILENO, TCSANOW, &new_opts);
+    
     Runner run;
     run.start();
+    
+    res=tcsetattr(STDIN_FILENO, TCSANOW, &org_opts);
+    assert(res == 0);
     return 0;
 }
