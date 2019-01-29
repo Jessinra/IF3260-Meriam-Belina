@@ -21,6 +21,8 @@ class Line{
         void setEndPixel(Pixel);
         Pixel getStartPixel() const;
         Pixel getEndPixel() const;
+        Pixel& getRefStartPixel() const;
+        Pixel& getRefEndPixel() const;
 };
 
 #endif

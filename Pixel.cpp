@@ -48,16 +48,21 @@ void Pixel::setColor(unsigned int color) {
     this->col = color;
 }
 
-void Pixel::rotation(float pointX, float pointY, float theta) {
-    x -= pointX;
-    y -= pointY;
+Pixel Pixel::rotation(float pointX, float pointY, float theta) {
+    int resultX = x;
+    int resultY = y;
 
-    float sinTheta = sin(theta);
-    float cosTheta = cos(theta);
+    resultX -= pointX;
+    resultY -= pointY;
+
+    float sinTheta = sin(theta*PI/180);
+    float cosTheta = cos(theta*PI/180);
 
     float xnew = x*cosTheta - y*sinTheta;
     float ynew = x*sinTheta + y*cosTheta;
 
-    x = xnew + pointX;
-    y = ynew + pointY;
+    resultX = xnew + pointX;
+    resultY = ynew + pointY;
+
+    return Pixel(resultX, resultY);
 }

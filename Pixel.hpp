@@ -2,6 +2,7 @@
 #define POINT_HPP
 
 #include <vector>
+#define PI 3.14159265
 using namespace std;
 
 class Pixel {
@@ -23,7 +24,7 @@ class Pixel {
     void setY(float);
     void setPos(float, float);
     void setColor(unsigned int);
-    void rotation(float, float, float);
+    Pixel rotation(float, float, float);
 };
 
 #endif

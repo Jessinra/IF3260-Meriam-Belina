@@ -49,8 +49,8 @@ void MoveableObject::selfRotation(float x, float y, float theta){
     float cosTheta = cos(theta);
 
     for (Line& line: lines) {
-        line.getStartPixel().rotation(x, y, theta);
-        line.getEndPixel().rotation(x, y, theta);
+        line.setStartPixel(line.getStartPixel().rotation(x, y, theta));
+        line.setEndPixel(line.getEndPixel().rotation(x, y, theta));
     }
 }
 

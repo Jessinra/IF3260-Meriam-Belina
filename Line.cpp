@@ -21,3 +21,4 @@ Pixel Line::getStartPixel() const{
 Pixel Line::getEndPixel() const{
     return this->endPixel;
 }
+
