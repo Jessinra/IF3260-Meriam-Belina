@@ -48,11 +48,11 @@ void MoveableObject::selfRotation(float x, float y, float theta){
     float yMin, yMax, xMin, xMax;
     bool alreadyloop = false;
 
-    cout<<"before"<<endl;
-    for(const Line &x : lines){
-        cout<<x.getStartPixel().getX()<<" "<<x.getStartPixel().getY()<<" "<<x.getEndPixel().getX()<<" "<<x.getEndPixel().getY()<<endl;
-    }
-    cout<<"chages "<<offset.getX()<<" "<<offset.getY()<<" "<<x<<" "<<y<<" "<<theta<<endl;
+    // cout<<"before"<<endl;
+    // for(const Line &x : lines){
+    //     cout<<x.getStartPixel().getX()<<" "<<x.getStartPixel().getY()<<" "<<x.getEndPixel().getX()<<" "<<x.getEndPixel().getY()<<endl;
+    // }
+    // cout<<"chages "<<offset.getX()<<" "<<offset.getY()<<" "<<x<<" "<<y<<" "<<theta<<endl;
     x -= offset.getX();
     y -= offset.getY();
 
@@ -76,10 +76,10 @@ void MoveableObject::selfRotation(float x, float y, float theta){
     x += offset.getX();
     y += offset.getY();
 
-    cout<<"after"<<endl;
-    for(const Line &x : lines){
-        cout<<x.getStartPixel().getX()<<" "<<x.getStartPixel().getY()<<" "<<x.getEndPixel().getX()<<" "<<x.getEndPixel().getY()<<endl;
-    }
+    // cout<<"after"<<endl;
+    // for(const Line &x : lines){
+    //     cout<<x.getStartPixel().getX()<<" "<<x.getStartPixel().getY()<<" "<<x.getEndPixel().getX()<<" "<<x.getEndPixel().getY()<<endl;
+    // }
 
     width = xMax - xMin + 1;
     height = yMax - yMin + 1;

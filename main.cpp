@@ -33,12 +33,15 @@ void *readinput(void *threadid){
 
 class Runner : public Master{
 protected:
-    Object pesawat, meriam, peluru;
+    Object pesawat, meriam, peluru, puing1, puing2, puing3;
 public:
     Runner(int h=700, int w = 1000) : Master(h, w) {
         pesawat = Object(0, 0, "object_plane.txt");
         meriam = Object(0, 0, "object_gun.txt");
-        peluru = Object(0, 0, "object_bullet.txt");
+        peluru = Object(0, 0, "object_star.txt");
+        puing1 = Object(0, 0, "object_plane_part1.txt");
+        puing2 = Object(0, 0, "object_plane_part2.txt");
+        puing3 = Object(0, 0, "object_plane_part3.txt");
     }
     void start() {
         int sudut_meriam = 0;
@@ -49,19 +52,22 @@ public:
         pesawat.setPos(Pixel(xend, 0));
         meriam.setPos(Pixel((xend - meriam.getWidth())/2.0, yend - meriam.getHeight() - 2));
         peluru.setPos(Pixel((xend - peluru.getWidth())/2.0, yend - meriam.getHeight() - peluru.getHeight() - 2));
-        vector<pair<MoveableObject, bool> > planes;
+        vector<MoveableObject> planes;
+        vector<MoveableObject> debris;
         vector<MoveableObject> bullets;
         MoveableObject cannon = meriam;
-        planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
+        planes.push_back(MoveableObject(-1, 0, 1, pesawat));
         bullets.push_back(MoveableObject(0, -1, 2, peluru));
         
-        for(int i=1;;i=(i+1)%1500){
+        for(int i=1;;i=(i+1)%1000){
 
             // draw
             clearWindow();
 
-            for(const pair<MoveableObject, bool> & obj : planes)
-                drawObject(obj.first);
+            for(const MoveableObject & obj : planes)
+                drawObject(obj);
+            for(const MoveableObject & obj : debris)
+                drawObject(obj);
             for(const MoveableObject & obj : bullets)
                 drawObject(obj);
             drawObject(cannon);
@@ -91,29 +97,55 @@ public:
                     }
                 }
             }
-            vector<pair<MoveableObject, bool> >tmpp;
-            vector<MoveableObject>tmpb;
-            for(pair<MoveableObject, bool> & obj : planes){
-                obj.first.move();
-                if(obj.first.outOfWindow(yend, xend)){
-                    
+            vector<char> checkp(planes.size(), 1);
+            vector<char> checkd(debris.size(), 1);
+            vector<MoveableObject>tmpp; // plane
+            vector<MoveableObject>tmpb; // bullet
+            vector<MoveableObject>tmpd; // debris
+            for(int j=0;j<planes.size();++j){
+                planes[j].move();
+                if(planes[j].outOfWindow(yend, xend)){
+                    checkp[j] = 0;
                 }
-                else{
-                    tmpp.push_back(obj);
-                }
-                
             }
-            for(MoveableObject & obj : bullets){
-                obj.move();
+            for(int j=0;j<debris.size();++j){
+                debris[j].move();
+                if(debris[j].outOfWindow(yend, xend)){
+                    checkd[j] = 0;
+                }
+            }
+            for(int j=0;j<bullets.size();++j){
+                bullets[j].move();
             }
             
             // very slow shit
             for(const MoveableObject & objb : bullets){
                 bool bisa = true;
-                for(pair<MoveableObject, bool> & objp : tmpp){
-                    if(overlap(objp.first, objb)){
-                        objp.first.setVector(-1, 2);
-                        objp.second = true;
+                for(int j=0;j<planes.size();++j){
+                    if(overlap(planes[j], objb)){
+                        // isi pecahan
+                        if(checkp[j]){
+                            MoveableObject sp = puing1;
+                            sp.setPos(planes[j].getRefPos());
+                            sp.setVector((planes[j].getDx()<0?-1:1) * sin(60*PI/180), cos(60*PI/180));
+                            tmpd.push_back(sp);
+                            sp = puing2;
+                            sp.setPos(Pixel(planes[j].getRefPos().getX(), planes[j].getRefPos().getY()));
+                            sp.setVector((planes[j].getDx()<0?-1:1) * sin(45*PI/180), cos(45*PI/180));
+                            tmpd.push_back(sp);
+                            sp = puing3;
+                            sp.setPos(Pixel(planes[j].getRefPos().getX(), planes[j].getRefPos().getY()));
+                            sp.setVector((planes[j].getDx()<0?-1:1) * sin(30*PI/180), cos(30*PI/180));
+                            tmpd.push_back(sp);
+                            checkp[j] = 0;
+                        }
+                        bisa = false;
+                    }
+                }
+                for(int j=0;j<debris.size();++j){
+                    debris[j].move();
+                    if(overlap(debris[j], objb)){
+                        checkd[j] = 0;
                         bisa = false;
                     }
                 }
@@ -121,18 +153,28 @@ public:
                     tmpb.push_back(objb);
                 }
             }
+            for(int j=0;j<planes.size();++j){
+                if(checkp[j])
+                    tmpp.push_back(planes[j]);
+            }
+            for(int j=0;j<debris.size();++j){
+                if(checkd[j])
+                    tmpd.push_back(debris[j]);
+            }
             planes = tmpp;
             bullets = tmpb;
+            debris = tmpd;
 
-            if(i % 300 == 0){
+            if(i % 200 == 0){
                 MoveableObject tmp = MoveableObject(peluru);
                 tmp.setSpeed(2);
                 tmp.selfRotation(titik_acuan_x, titik_acuan_y, sudut_meriam);
                 tmp.setVector(sin(sudut_meriam*PI/180), -cos(sudut_meriam*PI/180));
                 bullets.push_back(tmp);
             }
-            if(i % 500 == 0)
-                planes.push_back({MoveableObject(-1, 0, 1, pesawat), false});
+            if(i % 500 == 0){
+                planes.push_back(MoveableObject(-1, 0, 1, pesawat));
+            }
 
             usleep(6000);
         }
