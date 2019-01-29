@@ -44,7 +44,7 @@ void MoveableObject::move(){
     offset.setY(offset.getY() + dy * speed);
 }
 
-void MoveableObject::rotation(float x, float y, float theta){
+void MoveableObject::selfRotation(float x, float y, float theta){
     float sinTheta = sin(theta);
     float cosTheta = cos(theta);
 
