@@ -130,11 +130,11 @@ public:
                             sp.setVector((planes[j].getDx()<0?-1:1) * sin(60*PI/180), cos(60*PI/180));
                             tmpd.push_back(sp);
                             sp = puing2;
-                            sp.setPos(Pixel(planes[j].getRefPos().getX(), planes[j].getRefPos().getY()));
+                            sp.setPos(Pixel(planes[j].getRefPos().getX() + 100, planes[j].getRefPos().getY() + 50));
                             sp.setVector((planes[j].getDx()<0?-1:1) * sin(45*PI/180), cos(45*PI/180));
                             tmpd.push_back(sp);
                             sp = puing3;
-                            sp.setPos(Pixel(planes[j].getRefPos().getX(), planes[j].getRefPos().getY()));
+                            sp.setPos(Pixel(planes[j].getRefPos().getX() + 300, planes[j].getRefPos().getY()));
                             sp.setVector((planes[j].getDx()<0?-1:1) * sin(30*PI/180), cos(30*PI/180));
                             tmpd.push_back(sp);
                             checkp[j] = 0;
