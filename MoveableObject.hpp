@@ -14,6 +14,7 @@ public:
     MoveableObject(float, float, float, const Object &);
     void move();
     void selfRotation(float, float, float);
+    void selfDilated(float, float, float);  
 
     void setVector(float, float);
     void setSpeed(float);

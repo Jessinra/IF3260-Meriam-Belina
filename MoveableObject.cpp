@@ -85,6 +85,13 @@ void MoveableObject::selfRotation(float x, float y, float theta){
     height = yMax - yMin + 1;
 }
 
+void MoveableObject::selfDilated(float x, float y, float k) {
+    for (Line& line: lines) {
+        line.setStartPixel(line.getStartPixel().dilated(x, y, k));
+        line.setEndPixel(line.getEndPixel().dilated(x, y, k));
+    }
+}
+
 float MoveableObject::getDx() const{
     return dx;
 }

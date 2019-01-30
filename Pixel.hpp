@@ -25,6 +25,7 @@ class Pixel {
     void setPos(float, float);
     void setColor(unsigned int);
     Pixel rotation(float, float, float);
+    Pixel dilated(float, float, float);
 };
 
 #endif
